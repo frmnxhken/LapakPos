@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LapakPos — Aplikasi Kasir UMKM 100% Offline & QRIS Dinamis</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#F9F8F3',
+                        sand: '#EFECE4',
+                        sandDark: '#DFDBD0',
+                        teal: '#008D6E',
+                        tealDark: '#007258',
+                        amber: '#F9B248',
+                        coral: '#F18C8E',
+                        coralSoft: '#F6E3E1',
+                        lavender: '#C7CEEA',
+                        charcoal: '#1C1D1B',
+                        muted: '#6D6C66',
+                    },
+                    borderRadius: {
+                        '3xl': '24px',
+                        '4xl': '32px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F9F8F3;
+            color: #1C1D1B;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F9F8F3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D5D0C3;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6D6C66;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes sheetSlideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        .animate-panel {
+            animation: fadeSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-sheet {
+            animation: sheetSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal selection:text-white">
+
+    <!-- ==================== 1. NAVBAR ==================== -->
+    <header class="sticky top-0 z-40 bg-cream/90 backdrop-blur-md border-b border-sandDark/60">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-3">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-teal flex items-center justify-center text-white font-display font-extrabold text-xl transition-transform group-hover:scale-105">
+                    L
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-extrabold text-xl tracking-tight text-charcoal">LapakPos</span>
+                    
+                    </div>
+                    <p class="text-[11px] text-muted hidden sm:block font-medium">Kasir 100% Offline & QRIS Dinamis UMKM</p>
+                </div>
+            </a>
+
+            <!-- Quick Links (Desktop) -->
+            <nav class="hidden md:flex items-center gap-1 bg-sand p-1.5 rounded-full text-xs font-semibold text-charcoal">
+                <a href="#demo-hp" class="px-4 py-2 rounded-full hover:bg-cream transition-colors">Demo Interaktif</a>
+                <a href="#panduan-panel" class="px-4 py-2 rounded-full hover:bg-cream transition-colors">Penjelasan Panel</a>
+                <a href="#keunggulan" class="px-4 py-2 rounded-full hover:bg-cream transition-colors">Fitur Unggulan</a>
+            </nav>
+
+            <!-- CTA Download -->
+            <button onclick="triggerDownload()" class="px-5 py-3 rounded-full bg-charcoal hover:bg-teal text-white font-semibold text-sm transition-colors flex items-center gap-2 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                <span>Download APK <span class="hidden sm:inline">28 MB</span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==================== 2. HERO SECTION ==================== -->
+    <section id="demo-hp" class="pt-8 pb-20 md:pt-14 md:pb-24 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            
+            <!-- Left Content -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sand text-charcoal text-xs sm:text-sm font-semibold">
+                    <span>👋 Halo, Juragan UMKM!</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-teal text-white text-xs font-bold">Lapak Buka</span>
+                </div>
+
+                <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-[52px] leading-[1.12] tracking-tight text-charcoal">
+                    Kelola Warung & Kedai <span class="text-teal">100% Offline Tanpa Kuota.</span>
+                </h1>
+
+                <p class="text-base sm:text-lg text-muted max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                    Aplikasi kasir Android yang berjalan <strong>100% Offline</strong> dengan penyimpanan <strong>Database Lokal</strong> langsung di HP Anda serta generator <strong>QRIS Dinamis Otomatis</strong> untuk QRIS Merchant. Cepat, praktis, dan tanpa biaya langganan bulanan.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-1">
+                    <button onclick="triggerDownload()" class="w-full sm:w-auto px-7 py-4 rounded-full bg-teal hover:bg-tealDark text-white font-display font-bold text-base transition-all flex items-center justify-center gap-3 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span>Download LapakPos v1.0.0 (5.9 MB)</span>
+                    </button>
+
+                    <a href="#panduan-panel" class="w-full sm:w-auto px-7 py-4 rounded-full bg-sand hover:bg-sandDark text-charcoal font-semibold text-base transition-colors text-center">
+                        Pelajari Semua Panel
+                    </a>
+                </div>
+
+                <!-- File Specs Pills -->
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1 text-xs font-semibold text-charcoal">
+                    <span class="px-3.5 py-1.5 rounded-full bg-sand">🤖 Android 5.0+</span>
+                    <span class="px-3.5 py-1.5 rounded-full bg-sand">📦 Ukuran penuh 28 MB</span>
+                    <span class="px-3.5 py-1.5 rounded-full bg-sand">📴 100% Offline</span>
+                    <span class="px-3.5 py-1.5 rounded-full bg-sand">🔒 Database Lokal HP</span>
+                </div>
+            </div>
+
+            <!-- Right Interactive Phone Mockup (1:1 Authentic LapakPos UI) -->
+            <div class="lg:col-span-5 flex flex-col items-center">
+                <!-- Interactive Screen Switcher Bar above Phone -->
+                <div class="mb-3 flex flex-wrap items-center justify-center gap-1.5">
+                    <span class="text-[11px] font-bold text-muted mr-1">Coba Layar:</span>
+                    <button onclick="openDemoScreen('kasir')" class="px-2.5 py-1 rounded-full bg-sand hover:bg-sandDark text-[11px] font-bold text-charcoal cursor-pointer transition-colors">Kasir</button>
+                    <button onclick="openDemoScreen('checkout')" class="px-2.5 py-1 rounded-full bg-amber/40 hover:bg-amber/60 text-[11px] font-bold text-charcoal cursor-pointer transition-colors">Keranjang</button>
+                    <button onclick="openDemoScreen('nota')" class="px-2.5 py-1 rounded-full bg-sand hover:bg-sandDark text-[11px] font-bold text-charcoal cursor-pointer transition-colors">Nota</button>
+                    <button onclick="openDemoScreen('menu')" class="px-2.5 py-1 rounded-full bg-sand hover:bg-sandDark text-[11px] font-bold text-charcoal cursor-pointer transition-colors">Menu</button>
+                    <button onclick="openDemoScreen('omzet')" class="px-2.5 py-1 rounded-full bg-sand hover:bg-sandDark text-[11px] font-bold text-charcoal cursor-pointer transition-colors">Omzet</button>
+                    <button onclick="openDemoScreen('settings')" class="px-2.5 py-1 rounded-full bg-sand hover:bg-sandDark text-[11px] font-bold text-charcoal cursor-pointer transition-colors">⚙️</button>
+                </div>
+
+                <!-- Android Device Frame -->
+                <div class="w-full max-w-[366px] bg-charcoal p-[10px] rounded-[46px] border-[3px] border-sandDark">
+                    <!-- Screen -->
+                    <div class="bg-cream rounded-[36px] overflow-hidden flex flex-col h-[690px] relative select-none">
+                        
+                        <!-- Android Status Bar -->
+                        <div class="bg-[#7A7974] text-white px-5 py-1.5 flex items-center justify-between text-[11px] font-medium shrink-0">
+                            <div class="flex items-center gap-1.5">
+                                <span>03.38</span>
+                                <span class="opacity-85 text-[10px]">💬</span>
+                                <span class="opacity-85 text-[10px]">📷</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 text-[10px]">
+                                <span>⏰</span>
+                                <span class="font-bold text-[9px] leading-none">Vo<br>LTE1</span>
+                                <span>📶 4G</span>
+                                <span class="px-1.5 py-0.5 bg-white text-charcoal rounded-[4px] text-[9px] font-extrabold leading-none">88</span>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Screen Content Area -->
+                        <div id="phone-screen-body" class="flex-1 overflow-y-auto no-scrollbar px-4 pt-4 pb-28">
+                            <!-- Filled via JS -->
+                        </div>
+
+                        <!-- Floating Cart Trigger Pill -->
+                        <div id="phone-cart-banner" class="hidden absolute bottom-[84px] left-4 right-4 z-20">
+                            <button onclick="openCartSheet()" class="w-full py-3 px-4 rounded-full bg-charcoal text-white font-bold text-xs flex items-center justify-between border border-white/10 cursor-pointer active:scale-[0.98] transition-transform">
+                                <span class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-amber text-charcoal text-[11px] font-extrabold flex items-center justify-center" id="phone-cart-badge">2</span>
+                                    <span>Lihat Keranjang Pesanan</span>
+                                </span>
+                                <span class="text-amber font-display font-extrabold" id="phone-cart-total">Rp 16.000 ›</span>
+                            </button>
+                        </div>
+
+                        <!-- Bottom Sheet Overlay: Keranjang Pesanan -->
+                        <div id="phone-cart-sheet" class="hidden absolute inset-0 z-40 bg-charcoal/45 flex flex-col justify-end">
+                            <div class="bg-cream rounded-t-[30px] px-4 pt-2.5 pb-5 max-h-[90%] overflow-y-auto no-scrollbar animate-sheet" id="phone-cart-sheet-inner">
+                                <!-- Filled via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Sub-Modal di dalam HP -->
+                        <div id="phone-sub-modal" class="hidden absolute inset-0 z-50 bg-charcoal/50 p-4 flex items-center justify-center">
+                            <div class="bg-cream rounded-[28px] w-full p-5 border border-sandDark animate-panel" id="phone-sub-modal-inner">
+                                <!-- Filled via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Toast Notifikasi Mini di dalam HP -->
+                        <div id="phone-toast" class="hidden absolute top-10 left-4 right-4 z-50 bg-charcoal text-white text-xs font-semibold px-4 py-2.5 rounded-full text-center animate-panel">
+                            Notifikasi
+                        </div>
+
+                        <!-- Authentic LapakPos Floating Bottom Navigation Bar -->
+                        <div id="phone-bottom-nav" class="absolute bottom-3 left-3.5 right-3.5 bg-charcoal rounded-full p-1.5 flex items-center justify-between z-30">
+                            <button onclick="switchPhoneTab('kasir')" id="nav-btn-kasir" class="phone-nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 bg-white text-charcoal transition-all cursor-pointer">
+                                <svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0020 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                <span class="text-[10px] font-bold leading-tight">Kasir</span>
+                            </button>
+
+                            <button onclick="switchPhoneTab('nota')" id="nav-btn-nota" class="phone-nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#B4B2AA] hover:text-white transition-all cursor-pointer">
+                                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <span class="text-[10px] font-semibold leading-tight">Nota</span>
+                            </button>
+
+                            <button onclick="switchPhoneTab('menu')" id="nav-btn-menu" class="phone-nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#B4B2AA] hover:text-white transition-all cursor-pointer">
+                                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                                <span class="text-[10px] font-semibold leading-tight">Menu</span>
+                            </button>
+
+                            <button onclick="switchPhoneTab('omzet')" id="nav-btn-omzet" class="phone-nav-btn flex-1 py-2 rounded-full flex flex-col items-center justify-center gap-0.5 text-[#B4B2AA] hover:text-white transition-all cursor-pointer">
+                                <svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                <span class="text-[10px] font-semibold leading-tight">Omzet</span>
+                            </button>
+                        </div>
+
+                        <!-- Android System Navigation Bar -->
+                        <div class="bg-black text-white/80 py-1.5 px-12 flex items-center justify-between text-xs shrink-0 z-30">
+                            <span>☰</span>
+                            <span class="w-3 h-3 rounded-full border-[1.5px] border-white/80 inline-block"></span>
+                            <span>‹</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 3. HIGHLIGHT KEUNGGULAN UTAMA (BENTO GRID) ==================== -->
+    <section id="keunggulan" class="py-16 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+                <span class="px-4 py-1.5 rounded-full bg-sand text-charcoal text-xs font-bold uppercase tracking-wider">Kenapa LapakPos?</span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-charcoal">Dirancang Khusus untuk Kecepatan Kasir UMKM</h2>
+                <p class="text-muted text-sm sm:text-base">Tanpa perlu komputer mahal, tanpa biaya sewa bulanan, dan tetap lancar berjualan meski kuota internet habis.</p>
+            </div>
+
+            <!-- 4 Bento Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                
+                <!-- Card 1: Amber -->
+                <div class="bg-amber rounded-3xl p-6 text-charcoal flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="w-12 h-12 rounded-2xl bg-black/10 flex items-center justify-center text-2xl">📴</span>
+                        <span class="px-3 py-1 rounded-full bg-black/10 text-xs font-bold">Tanpa Kuota</span>
+                    </div>
+                    <div class="mt-6 space-y-2">
+                        <h3 class="font-display font-extrabold text-xl">100% Offline</h3>
+                        <p class="text-charcoal/85 text-sm leading-relaxed">
+                            Seluruh menu, transaksi, hingga laporan omzet berjalan 100% offline tanpa internet dan tersimpan aman di <strong>Database Lokal</strong> HP Anda.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Teal -->
+                <div class="bg-teal rounded-3xl p-6 text-white flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-2xl">📱</span>
+                        <span class="px-3 py-1 rounded-full bg-white/15 text-xs font-bold">QRIS Merchant</span>
+                    </div>
+                    <div class="mt-6 space-y-2">
+                        <h3 class="font-display font-extrabold text-xl">QRIS Dinamis Otomatis</h3>
+                        <p class="text-white/90 text-sm leading-relaxed">
+                            Upload gambar QRIS Merchant toko Anda sekali saja, lalu LapakPos otomatis meng-generate kode QRIS sesuai total belanja pembeli.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Coral -->
+                <div class="bg-coral rounded-3xl p-6 text-charcoal flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="w-12 h-12 rounded-2xl bg-black/10 flex items-center justify-center text-2xl">⚡</span>
+                        <span class="px-3 py-1 rounded-full bg-black/10 text-xs font-bold">Anti Ribet</span>
+                    </div>
+                    <div class="mt-6 space-y-2">
+                        <h3 class="font-display font-extrabold text-xl">Kembalian Otomatis</h3>
+                        <p class="text-charcoal/85 text-sm leading-relaxed">
+                            Pilih pecahan cepat (Pas, 20rb, 50rb, 100rb) dan kembalian langsung terhitung otomatis. Stok menu juga otomatis berkurang tiap transaksi.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Charcoal -->
+                <div class="bg-charcoal rounded-3xl p-6 text-white flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-2xl">🚀</span>
+                        <span class="px-3 py-1 rounded-full bg-amber text-charcoal text-xs font-bold">Full Size 28 MB</span>
+                    </div>
+                    <div class="mt-6 space-y-2">
+                        <h3 class="font-display font-extrabold text-xl">Ringan & Praktis</h3>
+                        <p class="text-sand/85 text-sm leading-relaxed">
+                            Ukuran full size hanya <strong>28 MB</strong>, ringan dijalankan di berbagai tipe HP Android lama maupun baru tanpa loading berat.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 4. PANDUAN LENGKAP TIAP PANEL & FITUR ==================== -->
+    <section id="panduan-panel" class="py-20 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Section Heading -->
+            <div class="text-center max-w-3xl mx-auto mb-10 space-y-3">
+                <span class="px-4 py-1.5 rounded-full bg-teal/15 text-teal text-xs font-bold uppercase tracking-wider">Panduan Fitur Lengkap</span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-charcoal">Mengenal Fungsi 6 Panel Utama LapakPos</h2>
+                <p class="text-muted text-sm sm:text-base">Pilih salah satu panel di bawah ini untuk melihat penjelasan detail fungsi dan tombol-tombol di dalamnya agar langsung paham saat pertama kali memakai aplikasi.</p>
+            </div>
+
+            <!-- Interactive Panel Selector Pills -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-8">
+                <button onclick="selectPanel(0)" class="panel-tab-btn px-4 py-2.5 rounded-full bg-charcoal text-white text-xs sm:text-sm font-bold transition-colors cursor-pointer">
+                    01. Panel Kasir
+                </button>
+                <button onclick="selectPanel(1)" class="panel-tab-btn px-4 py-2.5 rounded-full bg-sand text-charcoal hover:bg-sandDark text-xs sm:text-sm font-bold transition-colors cursor-pointer">
+                    02. Keranjang & Checkout
+                </button>
+                <button onclick="selectPanel(2)" class="panel-tab-btn px-4 py-2.5 rounded-full bg-sand text-charcoal hover:bg-sandDark text-xs sm:text-sm font-bold transition-colors cursor-pointer">
+                    03. Nota Transaksi
+                </button>
+                <button onclick="selectPanel(3)" class="panel-tab-btn px-4 py-2.5 rounded-full bg-sand text-charcoal hover:bg-sandDark text-xs sm:text-sm font-bold transition-colors cursor-pointer">
+                    04. Kelola Menu
+                </button>
+                <button onclick="selectPanel(4)" class="panel-tab-btn px-4 py-2.5 rounded-full bg-sand text-charcoal hover:bg-sandDark text-xs sm:text-sm font-bold transition-colors cursor-pointer">
+                    05. Laporan Omzet
+                </button>
+                <button onclick="selectPanel(5)" class="panel-tab-btn px-4 py-2.5 rounded-full bg-sand text-charcoal hover:bg-sandDark text-xs sm:text-sm font-bold transition-colors cursor-pointer">
+                    06. Pengaturan & Backup
+                </button>
+            </div>
+
+            <!-- Dynamic Panel Detail Showcase Box -->
+            <div id="panel-showcase-box" class="bg-sand rounded-4xl p-6 sm:p-10 border border-sandDark">
+                <!-- Content rendered by JS -->
+            </div>
+
+            <!-- Quick Overview Grid (Semua 6 Panel Ringkas + Tombol Coba di HP) -->
+            <div class="mt-14">
+                <h3 class="font-display font-bold text-xl text-charcoal mb-6 text-center sm:text-left">Ringkasan Cepat & Pintasan Demo 6 Panel Utama</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    
+                    <div class="bg-cream border border-sandDark rounded-3xl p-6 flex flex-col justify-between hover:border-teal transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-amber text-charcoal text-xs font-bold">Panel 01</span>
+                                <button onclick="selectPanel(0); document.getElementById('panel-showcase-box').scrollIntoView({behavior:'smooth'})" class="text-xs font-semibold text-muted hover:text-charcoal cursor-pointer">Detail Fitur</button>
+                            </div>
+                            <h4 class="font-display font-bold text-lg text-charcoal mb-1.5">Kasir & Katalog Cepat</h4>
+                            <p class="text-sm text-muted leading-relaxed">Pencarian menu kilat, filter kategori warna-warni, badge sisa stok otomatis, status <strong>Lapak Buka</strong>, dan tombol <strong>+ Tambah</strong> sekali sentuh.</p>
+                        </div>
+                        <button onclick="jumpToPhoneDemo('kasir')" class="mt-5 w-full py-2.5 px-4 rounded-full bg-sand hover:bg-charcoal hover:text-white text-charcoal text-xs font-bold transition-colors cursor-pointer">
+                            Coba Panel Ini di HP ↗
+                        </button>
+                    </div>
+
+                    <div class="bg-cream border border-sandDark rounded-3xl p-6 flex flex-col justify-between hover:border-teal transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-teal text-white text-xs font-bold">Panel 02</span>
+                                <button onclick="selectPanel(1); document.getElementById('panel-showcase-box').scrollIntoView({behavior:'smooth'})" class="text-xs font-semibold text-muted hover:text-charcoal cursor-pointer">Detail Fitur</button>
+                            </div>
+                            <h4 class="font-display font-bold text-lg text-charcoal mb-1.5">Keranjang & Tunai/QRIS</h4>
+                            <p class="text-sm text-muted leading-relaxed">Atur qty (-/+), bayar <strong>Tunai</strong> dengan pecahan cepat + kembalian otomatis, atau generate <strong>QRIS Dinamis</strong> otomatis (khusus QRIS Merchant).</p>
+                        </div>
+                        <button onclick="jumpToPhoneDemo('checkout')" class="mt-5 w-full py-2.5 px-4 rounded-full bg-sand hover:bg-charcoal hover:text-white text-charcoal text-xs font-bold transition-colors cursor-pointer">
+                            Coba Panel Ini di HP ↗
+                        </button>
+                    </div>
+
+                    <div class="bg-cream border border-sandDark rounded-3xl p-6 flex flex-col justify-between hover:border-teal transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-lavender text-charcoal text-xs font-bold">Panel 03</span>
+                                <button onclick="selectPanel(2); document.getElementById('panel-showcase-box').scrollIntoView({behavior:'smooth'})" class="text-xs font-semibold text-muted hover:text-charcoal cursor-pointer">Detail Fitur</button>
+                            </div>
+                            <h4 class="font-display font-bold text-lg text-charcoal mb-1.5">Nota Transaksi & Struk</h4>
+                            <p class="text-sm text-muted leading-relaxed">Riwayat nota berurutan dengan kode unik <code>#LPK-...</code>, filter Tunai/QRIS, lihat struk digital, hingga tombol <strong>Batalkan</strong> jika salah input.</p>
+                        </div>
+                        <button onclick="jumpToPhoneDemo('nota')" class="mt-5 w-full py-2.5 px-4 rounded-full bg-sand hover:bg-charcoal hover:text-white text-charcoal text-xs font-bold transition-colors cursor-pointer">
+                            Coba Panel Ini di HP ↗
+                        </button>
+                    </div>
+
+                    <div class="bg-cream border border-sandDark rounded-3xl p-6 flex flex-col justify-between hover:border-teal transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-coral text-charcoal text-xs font-bold">Panel 04</span>
+                                <button onclick="selectPanel(3); document.getElementById('panel-showcase-box').scrollIntoView({behavior:'smooth'})" class="text-xs font-semibold text-muted hover:text-charcoal cursor-pointer">Detail Fitur</button>
+                            </div>
+                            <h4 class="font-display font-bold text-lg text-charcoal mb-1.5">Kelola Menu & Stok</h4>
+                            <p class="text-sm text-muted leading-relaxed">Atur kategori warna (Makanan, Minuman, Cemilan), tambah produk baru, dan ubah jumlah stok barang langsung lewat pil <strong>- / +</strong>.</p>
+                        </div>
+                        <button onclick="jumpToPhoneDemo('menu')" class="mt-5 w-full py-2.5 px-4 rounded-full bg-sand hover:bg-charcoal hover:text-white text-charcoal text-xs font-bold transition-colors cursor-pointer">
+                            Coba Panel Ini di HP ↗
+                        </button>
+                    </div>
+
+                    <div class="bg-cream border border-sandDark rounded-3xl p-6 flex flex-col justify-between hover:border-teal transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-charcoal text-white text-xs font-bold">Panel 05</span>
+                                <button onclick="selectPanel(4); document.getElementById('panel-showcase-box').scrollIntoView({behavior:'smooth'})" class="text-xs font-semibold text-muted hover:text-charcoal cursor-pointer">Detail Fitur</button>
+                            </div>
+                            <h4 class="font-display font-bold text-lg text-charcoal mb-1.5">Laporan Omzet & Target</h4>
+                            <p class="text-sm text-muted leading-relaxed">Statistik transaksi, porsi terjual, rata-rata belanja, progress bar <strong>Target Harian</strong> yang bisa diubah, dan grafik batang omzet 7 hari.</p>
+                        </div>
+                        <button onclick="jumpToPhoneDemo('omzet')" class="mt-5 w-full py-2.5 px-4 rounded-full bg-sand hover:bg-charcoal hover:text-white text-charcoal text-xs font-bold transition-colors cursor-pointer">
+                            Coba Panel Ini di HP ↗
+                        </button>
+                    </div>
+
+                    <div class="bg-cream border border-sandDark rounded-3xl p-6 flex flex-col justify-between hover:border-teal transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-sandDark text-charcoal text-xs font-bold">Panel 06</span>
+                                <button onclick="selectPanel(5); document.getElementById('panel-showcase-box').scrollIntoView({behavior:'smooth'})" class="text-xs font-semibold text-muted hover:text-charcoal cursor-pointer">Detail Fitur</button>
+                            </div>
+                            <h4 class="font-display font-bold text-lg text-charcoal mb-1.5">Pengaturan & Backup Data</h4>
+                            <p class="text-sm text-muted leading-relaxed">Upload gambar <strong>QRIS Merchant</strong> untuk generate QRIS otomatis sesuai total belanja, serta ekspor/impor file backup data ke memori HP.</p>
+                        </div>
+                        <button onclick="jumpToPhoneDemo('settings')" class="mt-5 w-full py-2.5 px-4 rounded-full bg-sand hover:bg-charcoal hover:text-white text-charcoal text-xs font-bold transition-colors cursor-pointer">
+                            Coba Panel Ini di HP ↗
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 5. CTA PENUTUP & FOOTER ==================== -->
+    <section class="py-12 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto bg-charcoal rounded-4xl p-8 sm:p-14 text-center text-white relative overflow-hidden">
+            <!-- Dekorasi Warna Khas LapakPos -->
+            <div class="w-40 h-40 rounded-full bg-teal/25 absolute -top-12 -left-12 pointer-events-none"></div>
+            <div class="w-48 h-48 rounded-full bg-amber/20 absolute -bottom-16 -right-12 pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-amber text-xs font-bold">
+                    <span>✨ Siap Pakai dalam 1 Menit • 100% Offline</span>
+                </div>
+
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight">
+                    Mulai Rapikan Catatan Jualan Warung Anda Hari Ini.
+                </h2>
+
+                <p class="text-sand/80 text-sm sm:text-base leading-relaxed">
+                    Unduh <strong>LapakPos v1.0.0</strong> secara gratis. Instal di HP Android Anda, masukkan daftar menu, upload QRIS Merchant toko, dan langsung siap melayani pembeli tanpa kuota!
+                </p>
+
+                <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="triggerDownload()" class="w-full sm:w-auto px-8 py-4 rounded-full bg-teal hover:bg-tealDark text-white font-display font-bold text-base transition-all flex items-center justify-center gap-3 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span>Download LapakPos v1.0.0 (5.9 MB)</span>
+                    </button>
+                </div>
+
+                <!-- Spesifikasi Minimum -->
+                <div class="pt-4 grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg mx-auto text-left">
+                    <div class="bg-white/5 rounded-2xl p-3">
+                        <div class="text-[11px] text-sand/60">Sistem Operasi</div>
+                        <div class="text-xs font-bold text-white mt-0.5">Android 5.0+</div>
+                    </div>
+                    <div class="bg-white/5 rounded-2xl p-3">
+                        <div class="text-[11px] text-sand/60">Ukuran Full Size</div>
+                        <div class="text-xs font-bold text-white mt-0.5">28 MB (Ringan)</div>
+                    </div>
+                    <div class="bg-white/5 rounded-2xl p-3 col-span-2 sm:col-span-1">
+                        <div class="text-[11px] text-sand/60">Penyimpanan</div>
+                        <div class="text-xs font-bold text-amber mt-0.5">Database Lokal HP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-10 px-4 sm:px-6 text-center space-y-2">
+        <div class="font-display font-bold text-base text-charcoal">LapakPos v1.0.0</div>
+        <p class="text-xs sm:text-sm text-muted">100% Offline • Data tersimpan aman di Database Lokal HP • Dibuat untuk UMKM Indonesia</p>
+    </footer>
+
+    <!-- ==================== MODAL DOWNLOAD APK SIMULASI ==================== -->
+    <div id="download-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-charcoal/60 backdrop-blur-xs p-4">
+        <div class="bg-cream rounded-4xl max-w-md w-full p-6 sm:p-8 border border-sandDark animate-panel">
+            <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-teal text-white font-display font-extrabold text-xl flex items-center justify-center">L</div>
+                    <div>
+                        <h3 class="font-display font-extrabold text-lg text-charcoal">LapakPos_v1.0.0.apk</h3>
+                        <p class="text-xs text-muted">Versi Rilis Resmi • Ukuran 5.9 MB</p>
+                    </div>
+                </div>
+                <button onclick="closeDownloadModal()" class="w-9 h-9 rounded-full bg-sand hover:bg-sandDark flex items-center justify-center text-charcoal font-bold cursor-pointer">✕</button>
+            </div>
+
+            <!-- Panduan Singkat Instalasi APK -->
+            <div class="space-y-2.5 text-xs text-charcoal bg-amber/25 rounded-3xl p-4 mb-6">
+                <div class="font-bold text-sm">📲 Cara Instal di HP Android:</div>
+                <ol class="list-decimal list-inside space-y-1 text-charcoal/85">
+                    <li>Buka file <strong>LapakPos_v1.0.0.apk</strong> (5.9 MB) dari folder Download.</li>
+                    <li>Jika muncul peringatan keamanan, pilih <strong>Izinkan dari sumber ini</strong>.</li>
+                    <li>Tekan <strong>Instal</strong> dan aplikasi siap dipakai <strong>100% Offline</strong>!</li>
+                </ol>
+            </div>
+
+            <button onclick="closeDownloadModal()" class="w-full py-3.5 rounded-full bg-charcoal hover:bg-teal text-white font-bold text-sm transition-colors cursor-pointer">
+                Selesai
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT INTERACTIVITY ==================== -->
+    <script>
+        // --- 1. DATA & STATE MOCKUP HP INTERAKTIF (1:1 DENGAN 6 SCREENSHOT) ---
+        let phoneProducts = [
+            { id: 1, name: 'Nasi Goreng Spesial', cat: 'Makanan', price: 15000, stock: 10, bg: 'bg-amber', text: 'text-charcoal', badgeBg: 'bg-black/15 text-charcoal', iconBg: 'bg-black/10', btn: 'bg-charcoal text-white', icon: '🍛' },
+            { id: 2, name: 'Es Teh Manis Jumbo', cat: 'Minuman', price: 5000, stock: 50, bg: 'bg-teal', text: 'text-white', badgeBg: 'bg-black/20 text-white', iconBg: 'bg-black/15', btn: 'bg-white text-charcoal', icon: '🧋' },
+            { id: 3, name: 'Es Jeruk Peras', cat: 'Minuman', price: 7000, stock: 29, bg: 'bg-teal', text: 'text-white', badgeBg: 'bg-black/20 text-white', iconBg: 'bg-black/15', btn: 'bg-white text-charcoal', icon: '🍊' },
+            { id: 4, name: 'Tahu Crispy Pedas', cat: 'Cemilan', price: 8000, stock: 29, bg: 'bg-coral', text: 'text-charcoal', badgeBg: 'bg-black/15 text-charcoal', iconBg: 'bg-black/10', btn: 'bg-charcoal text-white', icon: '🥟' },
+            { id: 5, name: 'Pentol Kuah Pedas', cat: 'Cemilan', price: 10000, stock: 33, bg: 'bg-coral', text: 'text-charcoal', badgeBg: 'bg-black/15 text-charcoal', iconBg: 'bg-black/10', btn: 'bg-charcoal text-white', icon: '🍢' },
+            { id: 6, name: 'Es Coklat', cat: 'Minuman', price: 15000, stock: 8, bg: 'bg-teal', text: 'text-white', badgeBg: 'bg-black/20 text-white', iconBg: 'bg-black/15', btn: 'bg-white text-charcoal', icon: '🥤' }
+        ];
+
+        let phoneNotas = [
+            { id: '#LPK-261117-6485', time: '17:53', method: 'QRIS', items: ['1× Es Coklat', '1× Tahu Crispy Pedas'], total: 23000 },
+            { id: '#LPK-261117-6297', time: '11:03', method: 'QRIS', items: ['1× Es Coklat'], total: 15000 },
+            { id: '#LPK-261117-8692', time: '08:13', method: 'Tunai', items: ['1× Tahu Crispy Pedas', '1× Nasi Goreng Spesial'], total: 23000 }
+        ];
+
+        let phoneCart = [{ id: 4, qty: 2 }];
+        let phoneActiveTab = 'kasir';
+        let phoneSelectedCat = 'Semua';
+        let phoneSearchQuery = '';
+        let phoneNotaFilter = 'Semua';
+        let phoneNotaSearch = '';
+        let phoneLapakOpen = true;
+        let phonePayMethod = 'Tunai';
+        let phoneCashInput = 50000;
+        let phoneDailyTarget = 500000;
+        let phoneTodayRevenue = 164000;
+        let phoneTodayTrx = 6;
+        let phoneTodayPortions = 12;
+        let phoneQrisUploaded = false;
+
+        function formatRupiah(num) {
+            return 'Rp ' + Number(num).toLocaleString('id-ID');
+        }
+
+        function showPhoneToast(msg) {
+            const toast = document.getElementById('phone-toast');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            clearTimeout(window._phoneToastTimer);
+            window._phoneToastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2200);
+        }
+
+        function getCartTotals() {
+            let totalQty = 0;
+            let totalPrice = 0;
+            phoneCart.forEach(c => {
+                const p = phoneProducts.find(prod => prod.id === c.id);
+                if (p) {
+                    totalQty += c.qty;
+                    totalPrice += p.price * c.qty;
+                }
+            });
+            return { totalQty, totalPrice };
+        }
+
+        function updatePhoneCartBanner() {
+            const banner = document.getElementById('phone-cart-banner');
+            const sheet = document.getElementById('phone-cart-sheet');
+            if (!banner || !sheet) return;
+            const { totalQty, totalPrice } = getCartTotals();
+
+            if (totalQty > 0 && phoneActiveTab === 'kasir' && sheet.classList.contains('hidden')) {
+                banner.classList.remove('hidden');
+                document.getElementById('phone-cart-badge').innerText = totalQty;
+                document.getElementById('phone-cart-total').innerText = `${formatRupiah(totalPrice)} ›`;
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        function addToPhoneCart(id) {
+            if (!phoneLapakOpen) {
+                showPhoneToast('⚠️ Lapak sedang Tutup. Klik tombol status untuk membuka.');
+                return;
+            }
+            const prod = phoneProducts.find(p => p.id === id);
+            if (!prod || prod.stock <= 0) {
+                showPhoneToast('⚠️ Stok menu ini sedang habis!');
+                return;
+            }
+            const existing = phoneCart.find(c => c.id === id);
+            if (existing) {
+                if (existing.qty >= prod.stock) {
+                    showPhoneToast(`⚠️ Maksimal stok tersedia (${prod.stock})`);
+                    return;
+                }
+                existing.qty += 1;
+            } else {
+                phoneCart.push({ id: id, qty: 1 });
+            }
+            updatePhoneCartBanner();
+            const btn = document.getElementById(`add-btn-${id}`);
+            if (btn) {
+                btn.innerText = '✓ Masuk';
+                setTimeout(() => { btn.innerText = '+ Tambah'; }, 550);
+            }
+        }
+
+        function openCartSheet() {
+            if (phoneCart.length === 0) {
+                phoneCart = [{ id: 4, qty: 2 }];
+            }
+            const sheet = document.getElementById('phone-cart-sheet');
+            sheet.classList.remove('hidden');
+            updatePhoneCartBanner();
+            renderCartSheet();
+        }
+
+        function closeCartSheet() {
+            const sheet = document.getElementById('phone-cart-sheet');
+            sheet.classList.add('hidden');
+            updatePhoneCartBanner();
+        }
+
+        function updateCartQty(id, delta) {
+            const idx = phoneCart.findIndex(c => c.id === id);
+            if (idx === -1) return;
+            const prod = phoneProducts.find(p => p.id === id);
+            const nextQty = phoneCart[idx].qty + delta;
+            if (nextQty <= 0) {
+                phoneCart.splice(idx, 1);
+            } else if (prod && nextQty <= prod.stock) {
+                phoneCart[idx].qty = nextQty;
+            }
+            if (phoneCart.length === 0) {
+                closeCartSheet();
+            } else {
+                renderCartSheet();
+            }
+        }
+
+        function completeCheckout() {
+            const { totalQty, totalPrice } = getCartTotals();
+            if (totalQty === 0) return;
+            if (phonePayMethod === 'Tunai' && phoneCashInput < totalPrice) {
+                showPhoneToast('⚠️ Uang diterima kurang dari total belanja!');
+                return;
+            }
+
+            const notaItems = [];
+            phoneCart.forEach(c => {
+                const p = phoneProducts.find(prod => prod.id === c.id);
+                if (p) {
+                    p.stock = Math.max(0, p.stock - c.qty);
+                    notaItems.push(`${c.qty}× ${p.name}`);
+                }
+            });
+
+            const randCode = Math.floor(1000 + Math.random() * 9000);
+            phoneNotas.unshift({
+                id: `#LPK-261118-${randCode}`,
+                time: '03:39',
+                method: phonePayMethod,
+                items: notaItems,
+                total: totalPrice
+            });
+
+            phoneTodayRevenue += totalPrice;
+            phoneTodayTrx += 1;
+            phoneTodayPortions += totalQty;
+
+            phoneCart = [];
+            closeCartSheet();
+            showPhoneToast(`✅ Transaksi ${formatRupiah(totalPrice)} tersimpan di Database Lokal!`);
+            switchPhoneTab('nota');
+        }
+
+        function renderCartSheet() {
+            const inner = document.getElementById('phone-cart-sheet-inner');
+            const { totalPrice } = getCartTotals();
+            const change = Math.max(0, phoneCashInput - totalPrice);
+
+            inner.innerHTML = `
+                <!-- Drag Handle -->
+                <div class="w-10 h-1 bg-sandDark rounded-full mx-auto mb-3"></div>
+
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-3.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🛒</span>
+                        <h4 class="font-display font-extrabold text-[17px] text-charcoal">Keranjang Pesanan</h4>
+                    </div>
+                    <button onclick="closeCartSheet()" class="w-8 h-8 rounded-full hover:bg-sand flex items-center justify-center text-charcoal font-bold text-base cursor-pointer">✕</button>
+                </div>
+
+                <!-- Item List -->
+                <div class="space-y-2 max-h-[145px] overflow-y-auto no-scrollbar mb-3.5">
+                    ${phoneCart.map(c => {
+                        const p = phoneProducts.find(prod => prod.id === c.id);
+                        if (!p) return '';
+                        return `
+                            <div class="bg-sand rounded-[20px] px-3.5 py-2.5 flex items-center justify-between">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <span class="text-xl shrink-0">${p.icon}</span>
+                                    <div class="min-w-0">
+                                        <div class="font-display font-bold text-xs text-charcoal truncate">${p.name}</div>
+                                        <div class="text-[11px] text-muted font-medium">${formatRupiah(p.price)}</div>
+                                    </div>
+                                </div>
+                                <div class="bg-charcoal text-white rounded-full px-2.5 py-1 flex items-center gap-2.5 text-xs font-bold shrink-0">
+                                    <button onclick="updateCartQty(${p.id}, -1)" class="cursor-pointer hover:text-amber">−</button>
+                                    <span>${c.qty}</span>
+                                    <button onclick="updateCartQty(${p.id}, 1)" class="cursor-pointer hover:text-amber">+</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <!-- Total Belanja -->
+                <div class="flex items-center justify-between mb-3.5">
+                    <span class="font-display font-bold text-sm text-charcoal">Total Belanja</span>
+                    <span class="font-display font-extrabold text-lg text-charcoal">${formatRupiah(totalPrice)}</span>
+                </div>
+
+                <!-- Metode Pembayaran -->
+                <div class="mb-3">
+                    <div class="font-display font-bold text-xs text-charcoal mb-2">Metode Pembayaran</div>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button onclick="phonePayMethod='Tunai'; renderCartSheet()" class="py-2.5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${phonePayMethod === 'Tunai' ? 'bg-amber text-charcoal' : 'bg-sand text-charcoal'}">
+                            <span>💵</span><span>Tunai</span>
+                        </button>
+                        <button onclick="phonePayMethod='QRIS'; renderCartSheet()" class="py-2.5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${phonePayMethod === 'QRIS' ? 'bg-teal text-white' : 'bg-sand text-charcoal'}">
+                            <span>📱</span><span>QRIS</span>
+                        </button>
+                    </div>
+                </div>
+
+                ${phonePayMethod === 'Tunai' ? `
+                    <!-- Uang Diterima & Pecahan Cepat -->
+                    <div class="space-y-2 mb-3.5">
+                        <div class="font-display font-bold text-xs text-charcoal">Uang Diterima</div>
+                        <div class="bg-sand rounded-[18px] px-3.5 py-2.5 flex items-center justify-between">
+                            <input type="number" value="${phoneCashInput}" oninput="phoneCashInput=Number(this.value)||0; document.getElementById('sheet-change-val').innerText=formatRupiah(Math.max(0, phoneCashInput - ${totalPrice}))" class="bg-transparent font-bold text-sm text-charcoal w-full focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button onclick="phoneCashInput=${totalPrice}; renderCartSheet()" class="py-1.5 rounded-full bg-sand hover:bg-sandDark text-[10px] font-bold text-charcoal cursor-pointer">Pas</button>
+                            <button onclick="phoneCashInput=20000; renderCartSheet()" class="py-1.5 rounded-full bg-sand hover:bg-sandDark text-[10px] font-bold text-charcoal cursor-pointer">Rp 20.000</button>
+                            <button onclick="phoneCashInput=50000; renderCartSheet()" class="py-1.5 rounded-full bg-sand hover:bg-sandDark text-[10px] font-bold text-charcoal cursor-pointer">Rp 50.000</button>
+                            <button onclick="phoneCashInput=100000; renderCartSheet()" class="py-1.5 rounded-full bg-sand hover:bg-sandDark text-[10px] font-bold text-charcoal cursor-pointer">Rp 100.000</button>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-xs font-semibold text-muted">Kembalian</span>
+                            <span id="sheet-change-val" class="font-display font-extrabold text-sm text-teal">${formatRupiah(change)}</span>
+                        </div>
+                    </div>
+                ` : `
+                    <!-- QRIS Dinamis Otomatis (Khusus QRIS Merchant) -->
+                    <div class="bg-sand rounded-[22px] p-3 text-center mb-3.5 space-y-1.5">
+                        <div class="text-[11px] font-bold text-charcoal">Generate QRIS Otomatis (${formatRupiah(totalPrice)})</div>
+                        <div class="w-24 h-24 mx-auto bg-white rounded-2xl p-2 flex items-center justify-center border border-sandDark">
+                            <svg class="w-full h-full text-charcoal" viewBox="0 0 36 36" fill="currentColor">
+                                <path d="M2 2h10v10H2V2zm2 2v6h6V4H4zm2 2h2v2H6V6zm18-4h10v10H24V2zm2 2v6h6V4h-6zm2 2h2v2h-2V6zM2 24h10v10H2V24zm2 2v6h6v-6H4zm2 2h2v2H6v-2zm10-22h2v4h-2V6zm4 2h2v4h-2V8zm-6 6h4v2h-4v-2zm6 2h4v4h-4v-4zm-10 4h4v2h-4v-2zm6 4h2v6h-2v-6zm4 2h4v2h-4v-2zm4-4h4v2h-4v-2zm-2 8h6v4h-6v-4z"/>
+                            </svg>
+                        </div>
+                        <div class="text-[10px] text-teal font-bold">✓ Berlaku khusus QRIS Merchant (nominal otomatis terisi)</div>
+                    </div>
+                `}
+
+                <!-- Action Buttons -->
+                <div class="space-y-2">
+                    <button onclick="completeCheckout()" class="w-full py-3 rounded-full bg-teal hover:bg-tealDark text-white font-display font-bold text-xs cursor-pointer transition-colors">
+                        Selesaikan Transaksi (${formatRupiah(totalPrice)})
+                    </button>
+                    <button onclick="phoneCart=[]; closeCartSheet(); showPhoneToast('Pesanan dibatalkan')" class="w-full py-2.5 rounded-full bg-coralSoft hover:bg-coral/30 text-charcoal font-display font-bold text-xs cursor-pointer transition-colors">
+                        Batalkan Pesanan
+                    </button>
+                </div>
+            `;
+        }
+
+        function openPhoneSubModal(type, payload) {
+            const modal = document.getElementById('phone-sub-modal');
+            const inner = document.getElementById('phone-sub-modal-inner');
+            modal.classList.remove('hidden');
+
+            if (type === 'struk') {
+                const nota = phoneNotas[payload];
+                inner.innerHTML = `
+                    <div class="text-center border-b border-dashed border-sandDark pb-3 mb-3">
+                        <div class="font-display font-extrabold text-sm text-charcoal">LAPAKPOS WARUNG UCUP</div>
+                        <div class="text-[10px] text-muted">${nota.id} • ${nota.time} WIB</div>
+                        <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full bg-teal/15 text-teal text-[10px] font-bold">LUNAS (${nota.method})</span>
+                    </div>
+                    <div class="space-y-1.5 text-xs text-charcoal border-b border-dashed border-sandDark pb-3 mb-3">
+                        ${nota.items.map(it => `<div class="flex justify-between"><span>${it}</span><span class="font-semibold">✓</span></div>`).join('')}
+                    </div>
+                    <div class="flex justify-between items-center font-display font-extrabold text-sm mb-4">
+                        <span>TOTAL BAYAR</span>
+                        <span class="text-teal">${formatRupiah(nota.total)}</span>
+                    </div>
+                    <button onclick="closePhoneSubModal()" class="w-full py-2.5 rounded-full bg-charcoal text-white text-xs font-bold cursor-pointer">Tutup Struk</button>
+                `;
+            } else if (type === 'addProduct') {
+                inner.innerHTML = `
+                    <div class="font-display font-extrabold text-sm text-charcoal mb-3">+ Tambah Produk Baru</div>
+                    <div class="space-y-2.5 text-xs mb-4">
+                        <div>
+                            <label class="font-bold text-[11px] block mb-1">Nama Menu</label>
+                            <input id="new-prod-name" type="text" value="Kopi Susu Gula Aren" class="w-full bg-sand rounded-xl px-3 py-2 font-medium focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="font-bold text-[11px] block mb-1">Harga (Rp)</label>
+                                <input id="new-prod-price" type="number" value="12000" class="w-full bg-sand rounded-xl px-3 py-2 font-medium focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="font-bold text-[11px] block mb-1">Stok Awal</label>
+                                <input id="new-prod-stock" type="number" value="25" class="w-full bg-sand rounded-xl px-3 py-2 font-medium focus:outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="font-bold text-[11px] block mb-1">Kategori</label>
+                            <select id="new-prod-cat" class="w-full bg-sand rounded-xl px-3 py-2 font-medium focus:outline-none">
+                                <option value="Minuman">🧋 Minuman</option>
+                                <option value="Makanan">🍜 Makanan</option>
+                                <option value="Cemilan">🍢 Cemilan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="closePhoneSubModal()" class="py-2.5 rounded-full bg-sand text-charcoal text-xs font-bold cursor-pointer">Batal</button>
+                        <button onclick="saveNewPhoneProduct()" class="py-2.5 rounded-full bg-teal text-white text-xs font-bold cursor-pointer">Simpan Menu</button>
+                    </div>
+                `;
+            } else if (type === 'target') {
+                inner.innerHTML = `
+                    <div class="font-display font-extrabold text-sm text-charcoal mb-2">🎯 Ubah Target Harian</div>
+                    <p class="text-[11px] text-muted mb-3">Tentukan target omzet harian warung Anda:</p>
+                    <input id="new-target-input" type="number" value="${phoneDailyTarget}" class="w-full bg-sand rounded-2xl px-3.5 py-2.5 font-display font-extrabold text-sm text-charcoal mb-2 focus:outline-none">
+                    <div class="grid grid-cols-3 gap-1.5 mb-4">
+                        <button onclick="document.getElementById('new-target-input').value=300000" class="py-1.5 rounded-full bg-sand text-[10px] font-bold cursor-pointer">Rp 300rb</button>
+                        <button onclick="document.getElementById('new-target-input').value=500000" class="py-1.5 rounded-full bg-sand text-[10px] font-bold cursor-pointer">Rp 500rb</button>
+                        <button onclick="document.getElementById('new-target-input').value=1000000" class="py-1.5 rounded-full bg-sand text-[10px] font-bold cursor-pointer">Rp 1 Juta</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="closePhoneSubModal()" class="py-2.5 rounded-full bg-sand text-charcoal text-xs font-bold cursor-pointer">Batal</button>
+                        <button onclick="phoneDailyTarget=Math.max(50000, Number(document.getElementById('new-target-input').value)||500000); closePhoneSubModal(); renderPhoneScreen(); showPhoneToast('🎯 Target harian diperbarui!')" class="py-2.5 rounded-full bg-teal text-white text-xs font-bold cursor-pointer">Simpan</button>
+                    </div>
+                `;
+            }
+        }
+
+        function closePhoneSubModal() {
+            document.getElementById('phone-sub-modal').classList.add('hidden');
+        }
+
+        function saveNewPhoneProduct() {
+            const name = document.getElementById('new-prod-name').value.trim() || 'Menu Baru';
+            const price = Number(document.getElementById('new-prod-price').value) || 10000;
+            const stock = Number(document.getElementById('new-prod-stock').value) || 10;
+            const cat = document.getElementById('new-prod-cat').value;
+
+            const styleMap = {
+                'Makanan': { bg: 'bg-amber', text: 'text-charcoal', badgeBg: 'bg-black/15 text-charcoal', iconBg: 'bg-black/10', btn: 'bg-charcoal text-white', icon: '🍜' },
+                'Minuman': { bg: 'bg-teal', text: 'text-white', badgeBg: 'bg-black/20 text-white', iconBg: 'bg-black/15', btn: 'bg-white text-charcoal', icon: '🧋' },
+                'Cemilan': { bg: 'bg-coral', text: 'text-charcoal', badgeBg: 'bg-black/15 text-charcoal', iconBg: 'bg-black/10', btn: 'bg-charcoal text-white', icon: '🍢' }
+            };
+
+            phoneProducts.unshift({
+                id: Date.now(),
+                name,
+                cat,
+                price,
+                stock,
+                ...styleMap[cat]
+            });
+
+            closePhoneSubModal();
+            renderPhoneScreen();
+            showPhoneToast(`✅ "${name}" tersimpan di Database Lokal!`);
+        }
+
+        function adjustProductStock(id, delta) {
+            const p = phoneProducts.find(item => item.id === id);
+            if (!p) return;
+            p.stock = Math.max(0, p.stock + delta);
+            renderPhoneScreen();
+        }
+
+        function switchPhoneTab(tab) {
+            phoneActiveTab = tab;
+            closeCartSheet();
+            closePhoneSubModal();
+
+            const bottomNav = document.getElementById('phone-bottom-nav');
+            if (tab === 'settings') {
+                bottomNav.classList.add('hidden');
+            } else {
+                bottomNav.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.phone-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-charcoal');
+                btn.classList.add('text-[#B4B2AA]');
+            });
+            const activeBtn = document.getElementById(`nav-btn-${tab}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-[#B4B2AA]');
+                activeBtn.classList.add('bg-white', 'text-charcoal');
+            }
+
+            renderPhoneScreen();
+            updatePhoneCartBanner();
+        }
+
+        function openDemoScreen(screenName) {
+            if (screenName === 'checkout') {
+                switchPhoneTab('kasir');
+                openCartSheet();
+            } else {
+                switchPhoneTab(screenName);
+            }
+        }
+
+        function jumpToPhoneDemo(screenName) {
+            document.getElementById('demo-hp').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                openDemoScreen(screenName);
+            }, 350);
+        }
+
+        function renderPhoneScreen() {
+            const container = document.getElementById('phone-screen-body');
+            if (!container) return;
+
+            if (phoneActiveTab === 'kasir') {
+                const filtered = phoneProducts.filter(p => {
+                    const matchCat = phoneSelectedCat === 'Semua' || p.cat === phoneSelectedCat;
+                    const matchSearch = p.name.toLowerCase().includes(phoneSearchQuery.toLowerCase());
+                    return matchCat && matchSearch;
+                });
+
+                container.innerHTML = `
+                    <div class="animate-panel space-y-3.5">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <div class="font-display font-extrabold text-[17px] text-charcoal leading-tight">Halo, Ucup! 👋</div>
+                                <div class="text-[10px] text-muted font-medium mt-0.5">Rabu, 18 November 2026</div>
+                            </div>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <button onclick="phoneLapakOpen=!phoneLapakOpen; renderPhoneScreen(); showPhoneToast(phoneLapakOpen ? '🟢 Status: Lapak Buka' : '🔴 Status: Lapak Tutup')" class="px-3 py-1.5 rounded-full ${phoneLapakOpen ? 'bg-teal text-white' : 'bg-coral text-charcoal'} text-[10px] font-bold cursor-pointer transition-colors">
+                                    ${phoneLapakOpen ? 'Lapak Buka' : 'Lapak Tutup'}
+                                </button>
+                                <button onclick="switchPhoneTab('settings')" class="w-8 h-8 rounded-full bg-sand hover:bg-sandDark flex items-center justify-center text-charcoal cursor-pointer transition-colors" title="Pengaturan">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="bg-sand rounded-full px-4 py-2.5 flex items-center gap-2.5 text-xs">
+                            <svg class="w-4 h-4 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input type="text" value="${phoneSearchQuery}" oninput="phoneSearchQuery=this.value; renderPhoneScreen()" placeholder="Cari menu..." class="bg-transparent text-charcoal placeholder-muted w-full focus:outline-none text-xs font-medium">
+                        </div>
+
+                        <!-- Horizontal Filter Chips -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                            ${[
+                                { key: 'Semua', label: 'Semua' },
+                                { key: 'Makanan', label: '🍜 Makanan' },
+                                { key: 'Minuman', label: '🧋 Minuman' },
+                                { key: 'Cemilan', label: '🍢 Cemilan' }
+                            ].map(c => `
+                                <button onclick="phoneSelectedCat='${c.key}'; renderPhoneScreen()" class="px-3.5 py-2 rounded-full text-[11px] font-bold whitespace-nowrap cursor-pointer transition-colors ${phoneSelectedCat === c.key ? 'bg-charcoal text-white' : 'bg-sand text-charcoal hover:bg-sandDark'}">
+                                    ${c.label}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <!-- 2-Column Colored Menu Cards Grid -->
+                        <div class="grid grid-cols-2 gap-2.5">
+                            ${filtered.map(item => `
+                                <div class="${item.bg} ${item.text} rounded-[24px] p-3 flex flex-col justify-between">
+                                    <div class="flex items-start justify-between mb-2.5">
+                                        <span class="w-9 h-9 rounded-full ${item.iconBg} flex items-center justify-center text-lg">${item.icon}</span>
+                                        <span class="px-2 py-0.5 rounded-full ${item.badgeBg} text-[9px] font-bold">Stok ${item.stock}</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-[9px] opacity-80 font-medium">${item.cat}</div>
+                                        <div class="font-display font-bold text-[12px] leading-snug mt-0.5 line-clamp-1">${item.name}</div>
+                                        <div class="font-display font-extrabold text-[13px] mt-1">${formatRupiah(item.price)}</div>
+                                    </div>
+                                    <button id="add-btn-${item.id}" onclick="addToPhoneCart(${item.id})" class="mt-2.5 w-full py-2 rounded-full ${item.btn} text-[11px] font-bold cursor-pointer active:scale-95 transition-transform">
+                                        + Tambah
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (phoneActiveTab === 'nota') {
+                const filteredNotas = phoneNotas.filter(n => {
+                    const matchMethod = phoneNotaFilter === 'Semua' || n.method === phoneNotaFilter;
+                    const matchText = n.id.toLowerCase().includes(phoneNotaSearch.toLowerCase()) || n.items.join(' ').toLowerCase().includes(phoneNotaSearch.toLowerCase());
+                    return matchMethod && matchText;
+                });
+
+                container.innerHTML = `
+                    <div class="animate-panel space-y-3">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">📋</span>
+                                <h3 class="font-display font-extrabold text-[17px] text-charcoal">Nota Transaksi</h3>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-amber text-charcoal text-[10px] font-extrabold">${phoneNotas.length + 8} nota</span>
+                        </div>
+
+                        <!-- Search + Calendar Icon -->
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 bg-sand rounded-full px-3.5 py-2 flex items-center gap-2 text-xs">
+                                <span class="text-muted">🔍</span>
+                                <input type="text" value="${phoneNotaSearch}" oninput="phoneNotaSearch=this.value; renderPhoneScreen()" placeholder="Cari #LPK atau nama menu..." class="bg-transparent text-charcoal placeholder-muted w-full focus:outline-none text-[11px]">
+                            </div>
+                            <button onclick="showPhoneToast('📅 Filter tanggal: Hari ini')" class="w-9 h-9 rounded-full bg-sand flex items-center justify-center text-charcoal text-xs shrink-0 cursor-pointer">📅</button>
+                        </div>
+
+                        <!-- Filter Chips -->
+                        <div class="flex items-center gap-1.5">
+                            ${['Semua', 'Tunai', 'QRIS'].map(m => `
+                                <button onclick="phoneNotaFilter='${m}'; renderPhoneScreen()" class="px-3.5 py-1.5 rounded-full text-[11px] font-bold cursor-pointer ${phoneNotaFilter === m ? 'bg-charcoal text-white' : 'bg-sand text-charcoal'}">
+                                    ${m === 'Tunai' ? '💵 ' : m === 'QRIS' ? '📱 ' : ''}${m}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <!-- Nota Cards -->
+                        <div class="space-y-2.5">
+                            ${filteredNotas.map((n, idx) => `
+                                <div class="bg-sand rounded-[24px] p-3.5 space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <span class="font-display font-extrabold text-xs text-charcoal">${n.id}</span>
+                                            <span class="text-[10px] text-muted ml-1.5">${n.time}</span>
+                                        </div>
+                                        <span class="px-2.5 py-0.5 rounded-full ${n.method === 'QRIS' ? 'bg-lavender text-charcoal' : 'bg-amber text-charcoal'} text-[10px] font-bold">${n.method}</span>
+                                    </div>
+                                    <div class="text-[11px] text-charcoal/85 space-y-0.5 leading-snug">
+                                        ${n.items.map(it => `<div>${it}</div>`).join('')}
+                                    </div>
+                                    <div class="flex items-center justify-between pt-1">
+                                        <span class="text-[10px] text-muted font-medium">Total</span>
+                                        <span class="font-display font-extrabold text-sm text-charcoal">${formatRupiah(n.total)}</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                        <button onclick="phoneNotas.splice(${idx}, 1); renderPhoneScreen(); showPhoneToast('Nota ${n.id} dibatalkan')" class="py-2 rounded-full bg-coralSoft hover:bg-coral/30 text-charcoal text-[11px] font-bold cursor-pointer">Batalkan</button>
+                                        <button onclick="openPhoneSubModal('struk', ${idx})" class="py-2 rounded-full bg-charcoal text-white text-[11px] font-bold cursor-pointer">Lihat Struk</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (phoneActiveTab === 'menu') {
+                const countMakanan = phoneProducts.filter(p => p.cat === 'Makanan').length;
+                const countMinuman = phoneProducts.filter(p => p.cat === 'Minuman').length;
+                const countCemilan = phoneProducts.filter(p => p.cat === 'Cemilan').length;
+
+                container.innerHTML = `
+                    <div class="animate-panel space-y-3">
+                        <!-- Header -->
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">📦</span>
+                            <h3 class="font-display font-extrabold text-[17px] text-charcoal">Kelola Menu</h3>
+                        </div>
+
+                        <!-- Kategori -->
+                        <div>
+                            <div class="font-display font-bold text-xs text-charcoal mb-2">Kategori</div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2.5 py-1.5 rounded-full bg-amber text-charcoal text-[10px] font-bold inline-flex items-center gap-1.5">
+                                    🍜 Makanan (${countMakanan}) <span class="px-1.5 py-0.2 bg-black/15 rounded-full text-[9px]">Edit</span>
+                                </span>
+                                <span class="px-2.5 py-1.5 rounded-full bg-teal text-white text-[10px] font-bold inline-flex items-center gap-1.5">
+                                    🧋 Minuman (${countMinuman}) <span class="px-1.5 py-0.2 bg-black/20 rounded-full text-[9px]">Edit</span>
+                                </span>
+                                <span class="px-2.5 py-1.5 rounded-full bg-coral text-charcoal text-[10px] font-bold inline-flex items-center gap-1.5">
+                                    🍢 Cemilan (${countCemilan}) <span class="px-1.5 py-0.2 bg-black/15 rounded-full text-[9px]">Edit</span>
+                                </span>
+                                <button onclick="showPhoneToast('Fitur tambah kategori siap di APK')" class="px-3 py-1.5 rounded-full bg-sand text-charcoal text-[10px] font-bold cursor-pointer">+ Kategori</button>
+                            </div>
+                        </div>
+
+                        <!-- Daftar Produk Header -->
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="font-display font-bold text-xs text-charcoal">Daftar Produk</span>
+                            <button onclick="openPhoneSubModal('addProduct')" class="px-3 py-1.5 rounded-full bg-teal text-white text-[10px] font-bold cursor-pointer">+ Produk Baru</button>
+                        </div>
+
+                        <!-- Product List -->
+                        <div class="space-y-2.5">
+                            ${phoneProducts.map((p, idx) => `
+                                <div class="bg-sand rounded-[22px] p-3 flex items-center gap-3">
+                                    <div class="w-11 h-11 rounded-full ${p.bg} flex items-center justify-center text-lg shrink-0">${p.icon}</div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="font-display font-bold text-xs text-charcoal truncate">${p.name}</div>
+                                        <div class="text-[10px] text-muted mt-0.5">${formatRupiah(p.price)} • ${p.cat}</div>
+                                        <div class="flex items-center justify-between mt-2">
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="text-[10px] text-muted">Stok:</span>
+                                                <div class="bg-charcoal text-white rounded-full px-2.5 py-0.5 flex items-center gap-2.5 text-[10px] font-bold">
+                                                    <button onclick="adjustProductStock(${p.id}, -1)" class="cursor-pointer hover:text-amber">−</button>
+                                                    <span>${p.stock}</span>
+                                                    <button onclick="adjustProductStock(${p.id}, 1)" class="cursor-pointer hover:text-amber">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-[10px] font-bold">
+                                                <button onclick="showPhoneToast('Edit ${p.name}')" class="text-charcoal cursor-pointer">Edit</button>
+                                                <button onclick="phoneProducts.splice(${idx}, 1); renderPhoneScreen(); showPhoneToast('Menu dihapus')" class="text-coral cursor-pointer">Hapus</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (phoneActiveTab === 'omzet') {
+                const avgOrder = Math.round(phoneTodayRevenue / Math.max(1, phoneTodayTrx) / 1000);
+                const pct = Math.min(100, Math.round((phoneTodayRevenue / phoneDailyTarget) * 100));
+
+                container.innerHTML = `
+                    <div class="animate-panel space-y-3">
+                        <!-- Header -->
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">📊</span>
+                            <h3 class="font-display font-extrabold text-[17px] text-charcoal">Laporan Omzet</h3>
+                        </div>
+
+                        <!-- Date Selector Pill -->
+                        <div class="bg-sand rounded-full p-1.5 flex items-center justify-between text-xs font-bold text-charcoal">
+                            <button onclick="showPhoneToast('Menampilkan data Senin, 16 Nov')" class="w-7 h-7 rounded-full bg-cream flex items-center justify-center cursor-pointer">‹</button>
+                            <span>Selasa, 17 Nov 2026</span>
+                            <button onclick="showPhoneToast('Sudah di tanggal terbaru')" class="w-7 h-7 rounded-full bg-cream flex items-center justify-center cursor-pointer">›</button>
+                        </div>
+
+                        <!-- 3 Metric Cards -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="bg-amber rounded-[22px] p-3 text-charcoal">
+                                <div class="text-sm">🧾</div>
+                                <div class="font-display font-extrabold text-base mt-1.5">${phoneTodayTrx}</div>
+                                <div class="text-[10px] font-medium">Transaksi</div>
+                            </div>
+                            <div class="bg-teal rounded-[22px] p-3 text-white">
+                                <div class="text-sm">🍽️</div>
+                                <div class="font-display font-extrabold text-base mt-1.5">${phoneTodayPortions}</div>
+                                <div class="text-[10px] font-medium">Porsi Terjual</div>
+                            </div>
+                            <div class="bg-coral rounded-[22px] p-3 text-charcoal">
+                                <div class="text-sm">💰</div>
+                                <div class="font-display font-extrabold text-base mt-1.5">${avgOrder}k</div>
+                                <div class="text-[10px] font-medium">Rata-rata</div>
+                            </div>
+                        </div>
+
+                        <!-- Dark Target Harian Card -->
+                        <div class="bg-charcoal rounded-[26px] p-4 text-white space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-semibold text-sand/85">🎯 Target Harian</span>
+                                <button onclick="openPhoneSubModal('target')" class="px-3 py-1 rounded-full bg-[#323330] hover:bg-white/20 text-[10px] font-bold cursor-pointer">Ubah Target</button>
+                            </div>
+                            <div class="font-display font-extrabold text-3xl text-amber leading-none">${pct}%</div>
+                            <div class="text-[11px] text-sand/85 font-medium">${formatRupiah(phoneTodayRevenue)} / ${formatRupiah(phoneDailyTarget)}</div>
+                            <div class="w-full h-2.5 bg-white/15 rounded-full overflow-hidden pt-0">
+                                <div class="h-full bg-amber rounded-full transition-all duration-300" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Omzet 7 Hari Terakhir Bar Chart -->
+                        <div class="space-y-1.5">
+                            <div class="font-display font-bold text-xs text-charcoal">📈 Omzet 7 Hari Terakhir</div>
+                            <div class="bg-sand rounded-[24px] p-3.5">
+                                <div class="grid grid-cols-7 gap-1.5 items-end text-center h-24 pt-3">
+                                    ${[
+                                        { day: 'Rab', val: '0', h: 'h-1.5', color: 'bg-amber', active: false },
+                                        { day: 'Kam', val: '0', h: 'h-1.5', color: 'bg-amber', active: false },
+                                        { day: 'Jum', val: '0', h: 'h-1.5', color: 'bg-amber', active: false },
+                                        { day: 'Sab', val: '0', h: 'h-1.5', color: 'bg-amber', active: false },
+                                        { day: 'Min', val: '0', h: 'h-1.5', color: 'bg-amber', active: false },
+                                        { day: 'Sen', val: '59k', h: 'h-6', color: 'bg-amber', active: false },
+                                        { day: 'Sel', val: Math.round(phoneTodayRevenue/1000) + 'k', h: 'h-14', color: 'bg-teal', active: true }
+                                    ].map(b => `
+                                        <div class="flex flex-col items-center justify-end h-full gap-1">
+                                            <span class="text-[9px] font-bold ${b.active ? 'text-teal' : 'text-muted'}">${b.val}</span>
+                                            <div class="w-full max-w-[20px] ${b.h} ${b.color} rounded-full"></div>
+                                            <span class="text-[9px] font-bold ${b.active ? 'text-teal' : 'text-charcoal'}">${b.day}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (phoneActiveTab === 'settings') {
+                container.innerHTML = `
+                    <div class="animate-panel space-y-3.5 pb-6">
+                        <!-- Top Back Header -->
+                        <div class="flex items-center justify-between">
+                            <button onclick="switchPhoneTab('kasir')" class="px-3 py-1.5 rounded-full bg-sand text-charcoal text-xs font-bold cursor-pointer">← Kembali ke Kasir</button>
+                            <span class="text-[11px] font-bold text-muted">Pengaturan</span>
+                        </div>
+
+                        <!-- Pembayaran QRIS (Khusus QRIS Merchant) -->
+                        <div class="space-y-1.5">
+                            <div class="font-display font-bold text-xs text-charcoal">Pembayaran QRIS</div>
+                            <div class="bg-sand rounded-[24px] p-3.5 space-y-2.5">
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-10 h-10 rounded-full bg-teal/15 flex items-center justify-center text-lg shrink-0">📱</div>
+                                    <div>
+                                        <div class="font-display font-bold text-xs text-charcoal">QRIS Dinamis Otomatis</div>
+                                        <p class="text-[10px] text-muted leading-snug mt-0.5">Upload gambar <strong>QRIS Merchant</strong> toko Anda untuk meng-generate kode QRIS sesuai total belanja secara otomatis.</p>
+                                    </div>
+                                </div>
+                                <button onclick="phoneQrisUploaded=true; renderPhoneScreen(); showPhoneToast('✅ Gambar QRIS Merchant berhasil dipasang!')" class="w-full py-2.5 rounded-full bg-teal text-white text-[11px] font-bold cursor-pointer">
+                                    ${phoneQrisUploaded ? '✓ QRIS Merchant Terpasang (Ganti)' : '⬆️ Upload Gambar QRIS Merchant'}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Cadangan & Pulihkan Data -->
+                        <div class="space-y-1.5">
+                            <div class="font-display font-bold text-xs text-charcoal">Cadangan & Pulihkan Data</div>
+                            <div class="bg-sand rounded-[24px] p-3.5 space-y-2">
+                                <div class="flex items-start gap-2.5 mb-1">
+                                    <div class="w-10 h-10 rounded-full bg-amber flex items-center justify-center text-lg shrink-0">💾</div>
+                                    <div>
+                                        <div class="font-display font-bold text-xs text-charcoal">Database Lokal HP</div>
+                                        <p class="text-[10px] text-muted leading-snug mt-0.5">Simpan cadangan database lokal ke memori perangkat atau pulihkan data cadangan Anda.</p>
+                                    </div>
+                                </div>
+                                <button onclick="showPhoneToast('💾 File cadangan lapakpos_backup.sqlite tersimpan!')" class="w-full py-2.5 rounded-full bg-charcoal text-white text-[11px] font-bold cursor-pointer">
+                                    ⬇️ Simpan Cadangan ke Perangkat
+                                </button>
+                                <button onclick="showPhoneToast('📂 Pilih file cadangan (.sqlite) untuk memulihkan')" class="w-full py-2.5 rounded-full bg-lavender text-charcoal text-[11px] font-bold cursor-pointer">
+                                    ⬆️ Pulihkan Data Cadangan
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Zona Reset -->
+                        <div class="space-y-1.5">
+                            <div class="font-display font-bold text-xs text-charcoal">Zona Reset</div>
+                            <div class="bg-sand rounded-[24px] p-3.5 space-y-2">
+                                <div class="font-display font-bold text-xs text-charcoal">Bersihkan Semua Data</div>
+                                <p class="text-[10px] text-muted leading-snug">Hapus seluruh transaksi, menu, dan kategori untuk memulai dari awal dengan kondisi bersih.</p>
+                                <button onclick="showPhoneToast('⚠️ Simulasi: Semua data dibersihkan')" class="w-full py-2.5 rounded-full bg-coral text-charcoal text-[11px] font-bold cursor-pointer">
+                                    🗑️ Reset Data Aplikasi
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Version Footer (Sesuai revisi: Database Lokal HP) -->
+                        <div class="text-center pt-1">
+                            <div class="font-display font-bold text-xs text-muted">LapakPos v1.0.0 • 100% Offline</div>
+                            <div class="text-[10px] text-muted">Data tersimpan aman di Database Lokal HP</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // --- 2. DATA PANDUAN DETAIL 6 PANEL ---
+        const panelGuides = [
+            {
+                badge: 'Panel 01 • Layar Utama Penjualan',
+                badgeBg: 'bg-amber text-charcoal',
+                title: 'Panel Kasir: Catat Pesanan Pembeli dalam Hitungan Detik',
+                desc: 'Layar pertama yang langsung terbuka saat aplikasi dijalankan secara 100% offline. Didesain dengan kartu menu berwarna kontras agar kasir tidak salah pencet saat warung sedang ramai antrean.',
+                features: [
+                    { name: 'Status "Lapak Buka" & Sapaan', detail: 'Menampilkan sapaan pemilik toko, tanggal aktif hari ini, serta indikator status operasional toko.' },
+                    { name: 'Pencarian Kilat & Filter Kategori', detail: 'Ketik nama menu di kolom pencarian atau tap pill kategori (Semua, Makanan, Minuman, Cemilan) untuk menyaring menu seketika.' },
+                    { name: 'Kartu Menu Kode Warna & Sisa Stok', detail: 'Setiap kartu menu menampilkan badge "Stok" otomatis dan warna berbeda per kategori (Kuning Amber untuk Makanan, Hijau Teal untuk Minuman, Merah Coral untuk Cemilan).' },
+                    { name: 'Tombol "+ Tambah" Sekali Sentuh', detail: 'Langsung memasukkan item ke keranjang belanja tanpa perlu berpindah halaman.' }
+                ],
+                visualHTML: `
+                    <div class="bg-cream rounded-3xl p-5 border border-sandDark space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="font-display font-extrabold text-lg text-charcoal">Halo, Ucup! 👋</div>
+                                <div class="text-xs text-muted">Rabu, 18 November 2026</div>
+                            </div>
+                            <span class="px-4 py-1.5 rounded-full bg-teal text-white text-xs font-bold">Lapak Buka</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-amber rounded-3xl p-4 text-charcoal">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="w-9 h-9 rounded-full bg-black/10 flex items-center justify-center text-lg">🍛</span>
+                                    <span class="px-2.5 py-1 rounded-full bg-black/10 text-[11px] font-bold">Stok 10</span>
+                                </div>
+                                <div class="text-xs opacity-75">Makanan</div>
+                                <div class="font-display font-bold text-sm">Nasi Goreng Spesial</div>
+                                <div class="font-display font-extrabold text-base mt-1">Rp 15.000</div>
+                                <div class="mt-3 py-2 rounded-full bg-charcoal text-white text-xs font-bold text-center">+ Tambah</div>
+                            </div>
+                            <div class="bg-teal rounded-3xl p-4 text-white">
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-lg">🧋</span>
+                                    <span class="px-2.5 py-1 rounded-full bg-white/15 text-[11px] font-bold">Stok 50</span>
+                                </div>
+                                <div class="text-xs opacity-80">Minuman</div>
+                                <div class="font-display font-bold text-sm">Es Teh Manis Jumbo</div>
+                                <div class="font-display font-extrabold text-base mt-1">Rp 5.000</div>
+                                <div class="mt-3 py-2 rounded-full bg-cream text-charcoal text-xs font-bold text-center">+ Tambah</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                badge: 'Panel 02 • Pembayaran & Kembalian',
+                badgeBg: 'bg-teal text-white',
+                title: 'Panel Keranjang Pesanan & Checkout Cerdas',
+                desc: 'Menghitung total belanja dan kembalian secara otomatis tanpa perlu kalkulator terpisah. Mendukung pembayaran Tunai maupun generate QRIS Dinamis otomatis (khusus QRIS Merchant).',
+                features: [
+                    { name: 'Atur Jumlah Pesanan (- / +)', detail: 'Tambah atau kurangi porsi pesanan langsung di dalam keranjang sebelum pembayaran diproses.' },
+                    { name: 'Tombol Nominal Uang Cepat', detail: 'Untuk pembayaran Tunai, tersedia tombol pintas "Pas", "Rp 20.000", "Rp 50.000", dan "Rp 100.000" sehingga kasir tidak perlu mengetik angka nol berulang kali.' },
+                    { name: 'Hitung Kembalian Otomatis', detail: 'Selisih uang kembalian langsung tampil berwarna hijau terang agar terhindar dari salah hitung.' },
+                    { name: 'Generate QRIS Dinamis (QRIS Merchant)', detail: 'Pilih metode QRIS untuk meng-generate kode QRIS sesuai total belanja secara otomatis. Fitur ini berlaku khusus untuk QRIS Merchant.' }
+                ],
+                visualHTML: `
+                    <div class="bg-cream rounded-3xl p-5 border border-sandDark space-y-4">
+                        <div class="font-display font-extrabold text-lg text-charcoal">🛒 Keranjang Pesanan</div>
+                        <div class="bg-sand rounded-2xl p-3.5 flex items-center justify-between">
+                            <div>
+                                <div class="font-bold text-sm text-charcoal">🥟 Tahu Crispy Pedas</div>
+                                <div class="text-xs text-muted">Rp 8.000 × 2 porsi</div>
+                            </div>
+                            <span class="px-3.5 py-1.5 rounded-full bg-charcoal text-white text-xs font-bold">-  2  +</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-sm">Total Belanja</span>
+                            <span class="font-display font-extrabold text-xl text-charcoal">Rp 16.000</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div class="py-2.5 rounded-full bg-amber text-charcoal text-xs font-bold text-center">💵 Tunai</div>
+                            <div class="py-2.5 rounded-full bg-sand text-charcoal text-xs font-bold text-center">📱 QRIS</div>
+                        </div>
+                        <div class="bg-sand rounded-2xl p-3 flex justify-between items-center">
+                            <span class="text-xs text-muted">Uang Diterima: <strong>Rp 50.000</strong></span>
+                            <span class="text-xs font-extrabold text-teal">Kembalian: Rp 34.000</span>
+                        </div>
+                        <div class="py-3 rounded-full bg-teal text-white text-xs font-bold text-center">Selesaikan Transaksi (Rp 16.000)</div>
+                    </div>
+                `
+            },
+            {
+                badge: 'Panel 03 • Arsip & Bukti Bayar',
+                badgeBg: 'bg-lavender text-charcoal',
+                title: 'Panel Nota Transaksi: Lacak Riwayat & Cetak Struk',
+                desc: 'Setiap transaksi yang selesai otomatis tersimpan rapi di Database Lokal HP dengan nomor seri nota unik (#LPK-...). Memudahkan pemilik warung mengecek ulang transaksi harian.',
+                features: [
+                    { name: 'Nomor Nota Otomatis (#LPK-...)', detail: 'Setiap struk memiliki kode referensi unik beserta jam transaksi dan rincian item yang dibeli.' },
+                    { name: 'Filter Tunai, QRIS & Kalender Tanggal', detail: 'Pisahkan pemasukan uang tunai di laci kasir dan pemasukan QRIS di rekening hanya dengan sekali tap.' },
+                    { name: 'Lihat Struk Digital', detail: 'Tampilkan detail struk lengkap kapan saja untuk ditunjukkan atau dibagikan kepada pelanggan.' },
+                    { name: 'Fitur Batalkan Transaksi', detail: 'Jika kasir tidak sengaja salah input pesanan, transaksi dapat dibatalkan dengan mudah dan stok barang otomatis disesuaikan.' }
+                ],
+                visualHTML: `
+                    <div class="bg-cream rounded-3xl p-5 border border-sandDark space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="font-display font-extrabold text-lg text-charcoal">📋 Nota Transaksi</div>
+                            <span class="px-3 py-1 rounded-full bg-amber text-charcoal text-xs font-bold">11 nota</span>
+                        </div>
+                        <div class="bg-sand rounded-3xl p-4 space-y-2.5">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-sm text-charcoal">#LPK-261117-6485 <span class="text-xs font-normal text-muted">17:53</span></span>
+                                <span class="px-3 py-0.5 rounded-full bg-lavender text-charcoal text-xs font-bold">QRIS</span>
+                            </div>
+                            <div class="text-xs text-charcoal/85 space-y-0.5">
+                                <div>1× Es Coklat</div>
+                                <div>1× Tahu Crispy Pedas</div>
+                            </div>
+                            <div class="flex justify-between items-center pt-1">
+                                <span class="text-xs text-muted">Total</span>
+                                <span class="font-display font-extrabold text-base text-charcoal">Rp 23.000</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2.5 pt-1">
+                                <div class="py-2 rounded-full bg-coral/35 text-charcoal text-xs font-bold text-center">Batalkan</div>
+                                <div class="py-2 rounded-full bg-charcoal text-white text-xs font-bold text-center">Lihat Struk</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                badge: 'Panel 04 • Katalog & Inventaris',
+                badgeBg: 'bg-coral text-charcoal',
+                title: 'Panel Kelola Menu & Stok: Atur Produk Tanpa Ribet',
+                desc: 'Tambah menu baru, kelompokkan kategori dengan warna pilihan, dan perbarui jumlah stok harian langsung dari daftar produk.',
+                features: [
+                    { name: 'Manajemen Kategori Berwarna', detail: 'Buat atau edit kategori (seperti Makanan, Minuman, Cemilan) lengkap dengan ikon dan badge jumlah produk di dalamnya.' },
+                    { name: 'Tombol "+ Produk Baru"', detail: 'Tambahkan menu dagangan baru lengkap dengan harga jual, kategori, dan stok awal dalam hitungan detik.' },
+                    { name: 'Kontrol Stok Langsung (- / +)', detail: 'Baru saja selesai menggoreng stok tambahan? Cukup tekan tombol "+" pada baris produk untuk memperbarui sisa stok secara instan.' },
+                    { name: 'Edit & Hapus Produk', detail: 'Ubah harga jual atau hapus menu yang sudah tidak dijual dengan mudah.' }
+                ],
+                visualHTML: `
+                    <div class="bg-cream rounded-3xl p-5 border border-sandDark space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="font-display font-extrabold text-lg text-charcoal">📦 Kelola Menu</div>
+                            <span class="px-3.5 py-1.5 rounded-full bg-teal text-white text-xs font-bold">+ Produk Baru</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-amber text-charcoal text-xs font-bold">🍜 Makanan (1)</span>
+                            <span class="px-3 py-1 rounded-full bg-teal text-white text-xs font-bold">🧋 Minuman (3)</span>
+                            <span class="px-3 py-1 rounded-full bg-coral text-charcoal text-xs font-bold">🥟 Cemilan (2)</span>
+                        </div>
+                        <div class="bg-sand rounded-2xl p-3.5 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="w-10 h-10 rounded-full bg-amber flex items-center justify-center text-lg">🍛</span>
+                                <div>
+                                    <div class="font-bold text-sm text-charcoal">Nasi Goreng Spesial</div>
+                                    <div class="text-xs text-muted">Rp 15.000 • Makanan</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 bg-charcoal text-white rounded-full px-3 py-1 text-xs font-bold">
+                                <span>-</span><span>10</span><span>+</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                badge: 'Panel 05 • Analitik Penjualan',
+                badgeBg: 'bg-charcoal text-white',
+                title: 'Panel Laporan Omzet & Target Harian',
+                desc: 'Pantau kesehatan bisnis warung Anda setiap hari lewat ringkasan angka yang mudah dipahami, target penjualan harian, dan grafik performa seminggu terakhir.',
+                features: [
+                    { name: '3 Kartu Ringkasan Utama', detail: 'Menampilkan total Transaksi (kuning), total Porsi Terjual (hijau), dan Rata-rata Nilai Belanja per pembeli (merah coral).' },
+                    { name: 'Progress Bar Target Harian', detail: 'Tetapkan target omzet harian (misal Rp 500.000) dan pantau persentase pencapaiannya secara otomatis. Target bisa diubah kapan saja lewat tombol "Ubah Target".' },
+                    { name: 'Grafik Batang Omzet 7 Hari Terakhir', detail: 'Bandingkan performa penjualan dari hari Senin hingga Minggu secara visual untuk mengetahui hari paling ramai pembeli.' },
+                    { name: 'Navigasi Tanggal Harian', detail: 'Geser tanggal ke hari-hari sebelumnya untuk mengecek rekap omzet di masa lalu.' }
+                ],
+                visualHTML: `
+                    <div class="bg-cream rounded-3xl p-5 border border-sandDark space-y-4">
+                        <div class="font-display font-extrabold text-lg text-charcoal">📊 Laporan Omzet</div>
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <div class="bg-amber rounded-2xl p-3 text-charcoal">
+                                <div class="font-display font-extrabold text-lg">6</div>
+                                <div class="text-[11px]">Transaksi</div>
+                            </div>
+                            <div class="bg-teal rounded-2xl p-3 text-white">
+                                <div class="font-display font-extrabold text-lg">12</div>
+                                <div class="text-[11px]">Porsi Terjual</div>
+                            </div>
+                            <div class="bg-coral rounded-2xl p-3 text-charcoal">
+                                <div class="font-display font-extrabold text-lg">27k</div>
+                                <div class="text-[11px]">Rata-rata</div>
+                            </div>
+                        </div>
+                        <div class="bg-charcoal rounded-3xl p-4 text-white space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-sand/80">🎯 Target Harian</span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-white/15 text-[10px]">Ubah Target</span>
+                            </div>
+                            <div class="font-display font-extrabold text-3xl text-amber">32%</div>
+                            <div class="text-xs text-sand/80">Rp 164.000 / Rp 500.000</div>
+                            <div class="w-full h-2.5 bg-white/15 rounded-full overflow-hidden">
+                                <div class="h-full bg-amber rounded-full" style="width: 32%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                badge: 'Panel 06 • Konfigurasi & Cadangan Data',
+                badgeBg: 'bg-sandDark text-charcoal',
+                title: 'Panel Pengaturan, QRIS Merchant & Backup Data',
+                desc: 'Kendali penuh atas sistem pembayaran QRIS dan keamanan database lokal HP Anda. Ganti HP Android tidak perlu khawatir kehilangan data transaksi.',
+                features: [
+                    { name: 'Generate QRIS Dinamis (QRIS Merchant)', detail: 'Upload gambar QRIS statis milik toko Anda. Saat transaksi, LapakPos akan meng-generate kode QRIS sesuai total belanja secara otomatis. Fitur ini hanya berlaku untuk QRIS Merchant (bukan QRIS transfer pribadi).' },
+                    { name: 'Simpan File Backup Format .sqlite', detail: 'Ekspor seluruh riwayat transaksi, menu, dan kategori dari database lokal menjadi satu file backup berformat .sqlite ke memori perangkat agar aman saat ganti HP.' },
+                    { name: 'Pulihkan Data dari File Backup', detail: 'Pilih kembali file backup format .sqlite yang telah disimpan untuk memulihkan seluruh catatan jualan Anda kapan saja.' },
+                    { name: 'Zona Reset Bersih', detail: 'Opsi untuk menghapus seluruh data percobaan dan memulai pembukuan dari awal dengan kondisi bersih.' }
+                ],
+                visualHTML: `
+                    <div class="bg-cream rounded-3xl p-5 border border-sandDark space-y-3.5">
+                        <div class="bg-sand rounded-3xl p-4 space-y-2.5">
+                            <div class="font-display font-bold text-sm text-charcoal">📱 QRIS Dinamis Otomatis</div>
+                            <p class="text-xs text-muted">Upload gambar <strong>QRIS Merchant</strong> toko Anda untuk generate kode QRIS sesuai total belanja (khusus QRIS Merchant).</p>
+                            <div class="py-2.5 rounded-full bg-teal text-white text-xs font-bold text-center">⬆️ Upload Gambar QRIS Merchant</div>
+                        </div>
+                        <div class="bg-sand rounded-3xl p-4 space-y-2">
+                            <div class="font-display font-bold text-sm text-charcoal">💾 Cadangan & Pulihkan Data</div>
+                            <p class="text-xs text-muted">Simpan file backup format <code>.sqlite</code> ke perangkat Anda.</p>
+                            <div class="py-2.5 rounded-full bg-charcoal text-white text-xs font-bold text-center">⬇️ Simpan File Backup (.sqlite)</div>
+                            <div class="py-2.5 rounded-full bg-lavender text-charcoal text-xs font-bold text-center">⬆️ Pulihkan Data (.sqlite)</div>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function selectPanel(index) {
+            const data = panelGuides[index];
+            if (!data) return;
+
+            document.querySelectorAll('.panel-tab-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.remove('bg-sand', 'text-charcoal', 'hover:bg-sandDark');
+                    btn.classList.add('bg-charcoal', 'text-white');
+                } else {
+                    btn.classList.remove('bg-charcoal', 'text-white');
+                    btn.classList.add('bg-sand', 'text-charcoal', 'hover:bg-sandDark');
+                }
+            });
+
+            const box = document.getElementById('panel-showcase-box');
+            box.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center animate-panel">
+                    <!-- Penjelasan Fitur -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold ${data.badgeBg}">
+                            ${data.badge}
+                        </span>
+                        <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-charcoal leading-snug">
+                            ${data.title}
+                        </h3>
+                        <p class="text-muted text-sm sm:text-base leading-relaxed">
+                            ${data.desc}
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+                            ${data.features.map(f => `
+                                <div class="bg-cream rounded-2xl p-4 border border-sandDark/80">
+                                    <div class="font-display font-bold text-sm text-charcoal flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-teal shrink-0"></span>
+                                        <span>${f.name}</span>
+                                    </div>
+                                    <p class="text-xs text-muted mt-1.5 leading-relaxed">${f.detail}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Mini UI Preview -->
+                    <div class="lg:col-span-5">
+                        <div class="max-w-sm mx-auto">
+                            <div class="text-center text-[11px] font-semibold text-muted mb-2">Tampilan Antarmuka Panel</div>
+                            ${data.visualHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- 3. DOWNLOAD MODAL ---
+        function triggerDownload() {
+    const modal = document.getElementById('download-modal');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    const link = document.createElement('a');
+    link.href = 'https://github.com/frmnxhken/LapakPos/releases/download/apk/LapakPos.apk'; 
+    link.download = 'https://github.com/frmnxhken/LapakPos/releases/download/apk/LapakPos.apk';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+        function closeDownloadModal() {
+            const modal = document.getElementById('download-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            clearInterval(dlInterval);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPhoneScreen();
+            updatePhoneCartBanner();
+            selectPanel(0);
+        });
+    </script>
+</body>
+  </html>
